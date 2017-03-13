@@ -16,9 +16,7 @@ public class UserService extends BaseService<User, UserRepository> {
 		super(userRepository, serviceTransaction);
 	}
 
-	public List<User> query(int page, int size, String sort) throws ServiceException {
-		return null;
-//		TODO
-//		return execute(() -> repository.query(createPageRequest(page, size, sort), firstname, lastname, namequery)).getContent();
+	public List<User> query(int page, int size, String sort, String firstname, String lastname, String username) throws ServiceException {
+		return execute(() -> repository.query(createPageRequest(page, size, sort), firstname, lastname, username)).getContent();
 	}
 }

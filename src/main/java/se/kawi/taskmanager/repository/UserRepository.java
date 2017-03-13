@@ -10,15 +10,9 @@ import se.kawi.taskmanager.model.User;
 
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
-	User findByUsername(String username);
-
-	@Query("select u from #{#entityName} u where u.firstname like %:fName% and u.lastname like %:lName%")
-	Page<User> getUser(@Param("fName") String firstname, @Param("lName") String lastname, Pageable pageable);
-
-	Page<User> findByTeamId(Long teamId, Pageable pageable);
-
 	Long countByTeamId(Long teamId);
 
-	Page<User> findByFirstName(String firstname, Pageable pageable);
+	@Query("select u from #{#entityName} u where u.firstname like %:fName% and u.lastname like %:lName% and u.username like %:uName%")
+	Page<User> query(Pageable pageable, @Param("fName") String firstname, @Param("lName") String lastname, @Param("uName") String username);
 
 }
