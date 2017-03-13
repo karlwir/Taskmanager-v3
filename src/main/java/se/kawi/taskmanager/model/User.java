@@ -83,14 +83,10 @@ public class User extends AbstractEntity {
 		this.team = team;
 		return this;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "User, username: " + username 
-					+ ", firstname: " + firstname 
-					+ ", lastname: " + lastname 
-					+ ", activeUser: " + activeUser 
-					+ ", team: " + team;
+		return String.format("User: %s, %s, %s, %s, active:%s, team:%s", getId(), username, firstname, lastname, activeUser, team);
 	}
 	
 	@Override

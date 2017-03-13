@@ -66,15 +66,6 @@ public class WorkItem extends AbstractEntity {
 		DONE, UNSTARTED, STARTED, ARCHIVED
 	}
 
-	@Override
-	public String toString() {
-		String assignedUser = hasAssignUser() ? user.getUsername() : null;
-		return "Workitem, title: " + title 
-						+ ", description: " + description 
-						+ ", status: " + status 
-						+ ", assignedUserId: " + assignedUser;
-	}
-
 	public WorkItem setStatus(Status status) {
 		this.status = status;
 		return this;
@@ -93,6 +84,11 @@ public class WorkItem extends AbstractEntity {
 	public WorkItem setDescription(String description) {
 		this.description = description;
 		return this;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("Workitem: %s, %s, %s, %s", getId(), title, description, status);
 	}
 		
 }

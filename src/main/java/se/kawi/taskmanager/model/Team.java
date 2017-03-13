@@ -52,10 +52,10 @@ public class Team extends AbstractEntity {
 	public void setUsers(Collection<User> users) {
 		this.users = users;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Team id: " + getId() + ", team name: " + teamName + ", active: " + activeTeam;
+		return String.format("Team: %s, %s, active:%s", getId(), teamName, activeTeam);
 	}
 
 }

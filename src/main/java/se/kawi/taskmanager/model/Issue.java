@@ -37,6 +37,10 @@ public class Issue extends AbstractEntity {
 	public WorkItem getWorkitem() {
 		return workItem;
 	}
+	
+	public void setWorkItem(WorkItem workItem) {
+		this.workItem = workItem;
+	}
 
 	public Issue setDescription(String description) {
 		this.description = description;
@@ -47,11 +51,10 @@ public class Issue extends AbstractEntity {
 		this.openIssue = openIssue;
 		return this;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Issue " + getId() + ", description: " + description + ", is open: " + openIssue + ", workitem id: "
-				+ workItem;
+		return String.format("Issue: %s, %s, open:%s, workitem:%s", getId(), description, openIssue, workItem.getId());
 	}
 
 }
