@@ -44,11 +44,14 @@ public class IssueResource extends BaseResource<Issue, IssueService> {
 	}
 
 	@GET
-	public Response get(@BeanParam PagingQueryBean pagingQuery) {
+	public Response get(@BeanParam IssueQueryBean issueQuery) {
 		return serviceRequest(() -> {
-			List<Issue> entities = service.query(pagingQuery.getPage(),
-											    pagingQuery.getSize(),
-											    pagingQuery.getSort());
+			List<Issue> entities = service.query(issueQuery.getPage(),
+											    issueQuery.getSize(),
+											    issueQuery.getSort(),
+											    issueQuery.getTitle(),
+											    issueQuery.getDescription(),
+											    issueQuery.isOpenIssue());
 			return Response.ok().entity(entities).build();
 		});
 	}

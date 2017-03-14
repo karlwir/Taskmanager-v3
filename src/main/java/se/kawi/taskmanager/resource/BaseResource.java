@@ -27,6 +27,7 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 		try {
 			return serviceRequest.request();
 		} catch (ServiceException e) {
+			e.printStackTrace();
 			throw e.getWebApplicationException();
 		}
 	}

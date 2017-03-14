@@ -1,7 +1,10 @@
 package se.kawi.taskmanager.repository;
 
 import java.util.Collection;
+import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -29,5 +32,8 @@ public interface WorkItemRepository extends PagingAndSortingRepository<WorkItem,
 
 	@Query("Select count(wi) from #{#entityName} wi where wi.user.id = :userId and wi.status != 'ARCHIVED'")
 	Long countByUserId(@Param("userId") Long userId);
+
+	@Query("select w from #{#entityName} w where w.title like %:title% and w.description like %:description% and w.status in :status")
+	Page<WorkItem> query(Pageable pageable, @Param("title") String title, @Param("description") String description, @Param("status") List<WorkItem.Status> status);
 
 }

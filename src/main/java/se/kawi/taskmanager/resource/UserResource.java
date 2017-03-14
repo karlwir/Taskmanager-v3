@@ -51,7 +51,8 @@ public class UserResource extends BaseResource<User, UserService> {
 					userQuery.getSort(),
 					userQuery.getFirstname(),
 					userQuery.getLastname(),
-					userQuery.getUsername());
+					userQuery.getUsername(),
+					userQuery.getActiveUser());
 			return Response.ok().entity(entities).build();
 		});
 	}

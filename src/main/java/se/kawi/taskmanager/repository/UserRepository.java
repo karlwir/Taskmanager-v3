@@ -12,7 +12,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
 	Long countByTeamId(Long teamId);
 
-	@Query("select u from #{#entityName} u where u.firstname like %:fName% and u.lastname like %:lName% and u.username like %:uName%")
-	Page<User> query(Pageable pageable, @Param("fName") String firstname, @Param("lName") String lastname, @Param("uName") String username);
+	@Query("select u from #{#entityName} u where u.firstname like %:fName% and u.lastname like %:lName% and u.username like %:uName% and u.activeUser = :activeUser")
+	Page<User> query(Pageable pageable, @Param("fName") String firstname, @Param("lName") String lastname, @Param("uName") String username, @Param("activeUser") Boolean activeUser);
 
 }

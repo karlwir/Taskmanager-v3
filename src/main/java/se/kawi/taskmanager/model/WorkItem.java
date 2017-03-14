@@ -3,6 +3,9 @@ package se.kawi.taskmanager.model;
 import java.util.Collection;
 
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -50,8 +53,13 @@ public class WorkItem extends AbstractEntity {
 		return status;
 	}
 
+	@JsonIgnore
 	public User getUser() {
 		return user;
+	}
+	
+	public Long getUserId() {
+		return user != null ? user.getId() : null;
 	}
 	
 	public boolean hasAssignUser() {
@@ -63,7 +71,7 @@ public class WorkItem extends AbstractEntity {
 	}
 
 	public enum Status {
-		DONE, UNSTARTED, STARTED, ARCHIVED
+		 UNSTARTED, STARTED, DONE, ARCHIVED
 	}
 
 	public WorkItem setStatus(Status status) {

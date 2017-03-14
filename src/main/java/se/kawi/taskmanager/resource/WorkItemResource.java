@@ -43,11 +43,14 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	}
 
 	@GET
-	public Response get(@BeanParam PagingQueryBean pagingQuery) {
+	public Response get(@BeanParam WorkItemQueryBean workItemQuery) {
 		return serviceRequest(() -> {
-			List<WorkItem> entities = service.query(pagingQuery.getPage(),
-											    pagingQuery.getSize(),
-											    pagingQuery.getSort());
+			List<WorkItem> entities = service.query(workItemQuery.getPage(),
+												    workItemQuery.getSize(),
+												    workItemQuery.getSort(),
+												    workItemQuery.getTitle(),
+												    workItemQuery.getDescription(),
+												    workItemQuery.getStatus());
 			return Response.ok().entity(entities).build();
 		});
 	}

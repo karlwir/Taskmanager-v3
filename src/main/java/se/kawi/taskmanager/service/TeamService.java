@@ -17,9 +17,7 @@ public class TeamService extends BaseService<Team, TeamRepository> {
 		super(teamRepository, serviceTransaction);
 	}
 
-	public List<Team> query(int page, int size, String sort) throws ServiceException {
-		return null;
-//		TODO
-//		return execute(() -> repository.query(createPageRequest(page, size, sort), firstname, lastname, namequery)).getContent();
+	public List<Team> query(int page, int size, String sort, String teamName, Boolean activeTeam) throws ServiceException {
+		return execute(() -> repository.query(createPageRequest(page, size, sort), teamName, activeTeam)).getContent();
 	}
 }

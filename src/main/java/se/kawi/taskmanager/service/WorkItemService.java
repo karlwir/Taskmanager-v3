@@ -16,9 +16,7 @@ public class WorkItemService extends BaseService<WorkItem, WorkItemRepository> {
 		super(workItemRepository, serviceTransaction);
 	}
 
-	public List<WorkItem> query(int page, int size, String sort) throws ServiceException {
-		return null;
-//		TODO
-//		return execute(() -> repository.query(createPageRequest(page, size, sort), firstname, lastname, namequery)).getContent();
+	public List<WorkItem> query(int page, int size, String sort, String title, String description, List<WorkItem.Status> status) throws ServiceException {
+		return execute(() -> repository.query(createPageRequest(page, size, sort), title, description, status)).getContent();
 	}
 }

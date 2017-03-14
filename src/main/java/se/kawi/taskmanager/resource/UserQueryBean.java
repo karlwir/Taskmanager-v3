@@ -8,6 +8,7 @@ class UserQueryBean extends PagingQueryBean {
 	@QueryParam("firstname") @DefaultValue("") private String firstname;
 	@QueryParam("lastname") @DefaultValue("") private String lastname;
 	@QueryParam("username") @DefaultValue("") private String username;
+	@QueryParam("active") @DefaultValue("true") private String activeUser;
 
 	String getFirstname() {
 		return firstname;
@@ -19,6 +20,10 @@ class UserQueryBean extends PagingQueryBean {
 	
 	String getUsername() {
 		return username;
+	}
+
+	public Boolean getActiveUser() {
+		return Boolean.parseBoolean(activeUser);
 	}
 
 }

@@ -5,9 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "issues")
 public class Issue extends AbstractEntity {
+	
+	@Column(nullable = false)
+	private String title;
 
 	@Column(nullable = false)
 	private String description;
@@ -20,10 +25,15 @@ public class Issue extends AbstractEntity {
 
 	protected Issue() {}
 
-	public Issue(WorkItem workitem, String description) {
+	public Issue(WorkItem workitem, String title, String description) {
+		this.title = title;
 		this.description = description;
 		this.workItem = workitem;
 		this.openIssue = true;
+	}
+	
+	public String getTitle() {
+		return title;
 	}
 
 	public String getDescription() {
@@ -34,8 +44,17 @@ public class Issue extends AbstractEntity {
 		return openIssue;
 	}
 
+	@JsonIgnore
 	public WorkItem getWorkitem() {
 		return workItem;
+	}
+	
+	public Long getWorkitemId() {
+		return workItem != null ? workItem.getId() : null;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 	public void setWorkItem(WorkItem workItem) {
@@ -54,7 +73,7 @@ public class Issue extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return String.format("Issue: %s, %s, open:%s, workitem:%s", getId(), description, openIssue, workItem.getId());
+		return String.format("Issue: %s, %s, %s, open:%s, workitem:%s", getId(), title, description, openIssue, workItem.getId());
 	}
 
 }

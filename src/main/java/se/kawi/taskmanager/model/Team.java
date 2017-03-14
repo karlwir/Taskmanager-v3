@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -17,7 +18,7 @@ public class Team extends AbstractEntity {
 	@Column(nullable = false)
 	private boolean activeTeam;
 	
-	@OneToMany(mappedBy = "team")
+	@OneToMany(mappedBy = "team", fetch=FetchType.EAGER)
 	Collection<User> users;
 
 	protected Team() {}

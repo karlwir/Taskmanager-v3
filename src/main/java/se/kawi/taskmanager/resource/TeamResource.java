@@ -43,11 +43,13 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 	}
 
 	@GET
-	public Response get(@BeanParam PagingQueryBean pagingQuery) {
+	public Response get(@BeanParam TeamQueryBean teamQuery) {
 		return serviceRequest(() -> {
-			List<Team> entities = service.query(pagingQuery.getPage(),
-											    pagingQuery.getSize(),
-											    pagingQuery.getSort());
+			List<Team> entities = service.query(teamQuery.getPage(),
+											    teamQuery.getSize(),
+											    teamQuery.getSort(),
+											    teamQuery.getName(),
+											    teamQuery.isActiveTeam());
 			return Response.ok().entity(entities).build();
 		});
 	}

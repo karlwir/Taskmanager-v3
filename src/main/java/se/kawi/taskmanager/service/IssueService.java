@@ -17,9 +17,7 @@ public class IssueService extends BaseService<Issue, IssueRepository> {
 		super(issueRepository, serviceTransaction);
 	}
 
-	public List<Issue> query(int page, int size, String sort) throws ServiceException {
-		return null;
-//		TODO
-//		return execute(() -> repository.query(createPageRequest(page, size, sort), firstname, lastname, namequery)).getContent();
+	public List<Issue> query(int page, int size, String sort, String title, String description, Boolean openIssue) throws ServiceException {
+		return execute(() -> repository.query(createPageRequest(page, size, sort), title, description, openIssue)).getContent();
 	}
 }
