@@ -1,5 +1,7 @@
 package se.kawi.taskmanager.service;
 
+import java.util.List;
+
 import javax.ws.rs.WebApplicationException;
 
 import org.springframework.dao.DataAccessException;
@@ -7,13 +9,15 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import se.kawi.taskmanager.model.AbstractEntity;
 import se.kawi.taskmanager.service.ServiceException;
 import se.kawi.taskmanager.service.ServiceTransaction.Action;
 
-public abstract class BaseService<E extends AbstractEntity, R extends PagingAndSortingRepository<E, Long>> {
+public abstract class BaseService<E extends AbstractEntity, R extends PagingAndSortingRepository<E, Long> & JpaSpecificationExecutor<E>> {
 
 	protected R repository;
 	protected ServiceTransaction serviceTransaction;
@@ -47,15 +51,19 @@ public abstract class BaseService<E extends AbstractEntity, R extends PagingAndS
 		return execute(() -> repository.save(entity));
 	}
 	
+	public E getById(Long id) throws ServiceException {
+		return execute(() -> repository.findOne(id));
+	}
+	
+	public List<E> queryBySpec(Specification<E> spec, int page, int size, String sort) throws ServiceException {
+		return execute(() -> repository.findAll(spec, createPageRequest(page, size, sort))).getContent();
+	}
+
 	public void delete(E entity) throws ServiceException {
 		transaction(() -> {
 			repository.delete(entity);
 			return null;
 		});
-	}
-	
-	public E getById(Long id) throws ServiceException {
-		return execute(() -> repository.findOne(id));
 	}
 	
 	protected Pageable createPageRequest(int page, int size, String sort) {

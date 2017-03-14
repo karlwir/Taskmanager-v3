@@ -1,9 +1,11 @@
 package se.kawi.taskmanager.model;
 
 import java.util.Collection;
-import java.util.UUID;
 
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -25,6 +27,7 @@ public class User extends AbstractEntity {
 	@Column(nullable = false)
 	private boolean activeUser;
 	
+	@JsonIgnore
 	@ManyToOne
 	private Team team;
 	
@@ -59,7 +62,7 @@ public class User extends AbstractEntity {
 	public Team getTeam() {
 		return team;
 	}
-
+	
 	public User setFirstName(String firstname) {
 		this.firstname = firstname;
 		return this;

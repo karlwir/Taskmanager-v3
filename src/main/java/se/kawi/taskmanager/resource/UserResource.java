@@ -43,16 +43,13 @@ public class UserResource extends BaseResource<User, UserService> {
 	}
 
 	@GET
-	public Response getUsers(@BeanParam UserQueryBean userQuery) {
+	public Response getUsersBySpec(@BeanParam UserQueryBean userQuery) {
 		return serviceRequest(() -> {
-			List<User> entities = service.query(
+			List<User> entities = service.queryBySpec(
+					UserSpecifications.build(userQuery),
 					userQuery.getPage(),
 					userQuery.getSize(),
-					userQuery.getSort(),
-					userQuery.getFirstname(),
-					userQuery.getLastname(),
-					userQuery.getUsername(),
-					userQuery.getActiveUser());
+					userQuery.getSort());
 			return Response.ok().entity(entities).build();
 		});
 	}
