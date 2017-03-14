@@ -1,6 +1,7 @@
 package se.kawi.taskmanager.model;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import javax.persistence.Table;
 import javax.persistence.Column;
@@ -29,6 +30,9 @@ public class User extends AbstractEntity {
 	
 	@OneToMany(mappedBy = "user")
 	private Collection<WorkItem> workitems;
+
+	@Column(nullable = false)
+	private String key;
 	
 	protected User() {}
 
@@ -37,7 +41,12 @@ public class User extends AbstractEntity {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.activeUser = true;
+		this.key = UUID.randomUUID().toString();
 	}
+	
+//	public String getKey() {
+//		return key;
+//	}
 
 	public String getUsername() {
 		return username;

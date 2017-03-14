@@ -27,7 +27,7 @@ public abstract class BaseService<E extends AbstractEntity, R extends PagingAndS
 		try {
 			return action.execute();			
 		} catch (DataIntegrityViolationException e) {
-			throw new ServiceException("Execute failed: " + e.getMessage(), e, new WebApplicationException(403));
+			throw new ServiceException("Execute failed: " + e.getMessage(), e, new WebApplicationException(400));
 		} catch (DataAccessException e) {
 			throw new ServiceException("Execute failed: " + e.getMessage(), e);
 		}
@@ -37,7 +37,7 @@ public abstract class BaseService<E extends AbstractEntity, R extends PagingAndS
 		try {
 			return serviceTransaction.execute(() -> action.execute());			
 		} catch (DataIntegrityViolationException e) {
-			throw new ServiceException("Transaction failed: " + e.getMessage(), e, new WebApplicationException(403));
+			throw new ServiceException("Transaction failed: " + e.getMessage(), e, new WebApplicationException(400));
 		} catch (DataAccessException e) {
 			throw new ServiceException("Transaction failed: " + e.getMessage(), e);
 		}
