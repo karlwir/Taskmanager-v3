@@ -23,7 +23,7 @@ public class User extends AbstractEntity {
 	
 	@Column(nullable = false)
 	private String lastname;
-	
+
 	@Column(nullable = false)
 	private boolean activeUser;
 	

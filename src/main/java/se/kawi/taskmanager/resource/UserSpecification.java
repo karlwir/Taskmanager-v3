@@ -13,9 +13,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-final class UserSpecifications {
+final class UserSpecification {
 
-	private UserSpecifications() {}
+	private UserSpecification() {}
 
 	static Specification<User> build(UserQueryBean userQuery) {
 		return new Specification<User>() {
