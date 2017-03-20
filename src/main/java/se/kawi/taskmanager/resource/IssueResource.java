@@ -12,15 +12,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Component;
 
 import se.kawi.taskmanager.model.Issue;
 import se.kawi.taskmanager.service.IssueService;
-
 
 @Component
 @Path("/issues")
@@ -33,33 +30,34 @@ public class IssueResource extends BaseResource<Issue, IssueService> {
 	}
 
 	@POST
-	public Response save(@Valid Issue entity) {
+	public Response createIssue(@Valid Issue entity) {
 		return super.create(entity);
 	}
 
 	@GET
 	@Path("/{id}")
-	public Response get(@PathParam("id") Long id) {
+	public Response getIssue(@PathParam("id") Long id) {
 		return super.byId(id);
 	}
 
 	@GET
-	public Response get(@BeanParam IssueQueryBean issueQuery) {
-		return serviceRequest(() -> {
-			List<Issue> entities = service.query(
-												issueQuery.buildSpecification(),
-												issueQuery.buildPageable());
-			return Response.ok().entity(entities).build();
-		});
+	public Response getIssues(@BeanParam IssueQueryBean issueQuery) {
+		return super.get(issueQuery.buildSpecification(), issueQuery.buildPageable());
+	}
+	
+	@GET
+	@Path("/count")
+	public Response countIssues(@BeanParam IssueQueryBean issueQuery) {
+		return super.count(issueQuery.buildSpecification());
 	}
 
 	@PUT
-	public Response update(@Valid Issue entity) {
+	public Response updateIssue(@Valid Issue entity) {
 		return super.update(entity);
 	}
 
 	@DELETE
-	public Response delete(@Valid Issue entity) {
+	public Response deleteIssue(@Valid Issue entity) {
 		return super.delete(entity);
 	}
 

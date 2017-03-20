@@ -1,9 +1,13 @@
 package se.kawi.taskmanager.resource;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.validation.Valid;
 import javax.ws.rs.core.UriInfo;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import se.kawi.taskmanager.model.AbstractEntity;
 import se.kawi.taskmanager.service.BaseService;
@@ -47,6 +51,20 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 		});
 	}
 	
+	protected Response get(Specification<E> spec, Pageable pageable) {
+		return serviceRequest(() -> {
+			List<E> entities = service.query(spec, pageable);
+			return Response.ok().entity(entities).build();
+		});
+	}
+
+	public Response count(Specification<E> spec) {
+		return serviceRequest (() -> {
+			Long quantity = service.count(spec);
+			return Response.ok(quantity).build();
+		});		
+	}
+	
 	protected Response update(@Valid E entity) {
 		return serviceRequest(() -> {
 			service.save(entity);
@@ -60,5 +78,6 @@ abstract class BaseResource<E extends AbstractEntity, S extends BaseService<E, ?
 			return Response.noContent().build();
 		});
 	}
+
 
 }

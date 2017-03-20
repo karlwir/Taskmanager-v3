@@ -1,7 +1,6 @@
 package se.kawi.taskmanager.resource;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

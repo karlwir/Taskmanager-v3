@@ -12,8 +12,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Component;
@@ -32,33 +30,34 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 	}
 
 	@POST
-	public Response save(@Valid Team entity) {
+	public Response createTeam(@Valid Team entity) {
 		return super.create(entity);
 	}
 
 	@GET
 	@Path("/{id}")
-	public Response get(@PathParam("id") Long id) {
+	public Response getTeam(@PathParam("id") Long id) {
 		return super.byId(id);
 	}
 
 	@GET
-	public Response get(@BeanParam TeamQueryBean teamQuery) {
-		return serviceRequest(() -> {
-			List<Team> entities = service.query(
-												teamQuery.buildSpecification(),
-											    teamQuery.buildPageable());
-			return Response.ok().entity(entities).build();
-		});
+	public Response getTeams(@BeanParam TeamQueryBean teamQuery) {
+		return super.get(teamQuery.buildSpecification(), teamQuery.buildPageable());
+	}
+	
+	@GET
+	@Path("/count")
+	public Response countTeam(@BeanParam TeamQueryBean teamQuery) {
+		return super.count(teamQuery.buildSpecification());
 	}
 
 	@PUT
-	public Response update(@Valid Team entity) {
+	public Response updateTeam(@Valid Team entity) {
 		return super.update(entity);
 	}
 
 	@DELETE
-	public Response delete(@Valid Team entity) {
+	public Response deleteTeam(@Valid Team entity) {
 		return super.delete(entity);
 	}
 

@@ -58,6 +58,10 @@ public abstract class BaseService<E extends AbstractEntity, R extends PagingAndS
 	public List<E> query(Specification<E> spec, Pageable pageable) throws ServiceException {
 		return execute(() -> repository.findAll(spec, pageable)).getContent();
 	}
+	
+	public Long count(Specification<E> spec) throws ServiceException {
+		return execute(() -> repository.count(spec));
+	}
 
 	public void delete(E entity) throws ServiceException {
 		transaction(() -> {

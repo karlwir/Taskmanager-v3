@@ -12,8 +12,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Component;
@@ -32,32 +30,34 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	}
 
 	@POST
-	public Response save(@Valid WorkItem entity) {
+	public Response createWorkItem(@Valid WorkItem entity) {
 		return super.create(entity);
 	}
 
 	@GET
 	@Path("/{id}")
-	public Response get(@PathParam("id") Long id) {
+	public Response getWorkItem(@PathParam("id") Long id) {
 		return super.byId(id);
 	}
 
 	@GET
-	public Response get(@BeanParam WorkItemQueryBean workItemQuery) {
-		return serviceRequest(() -> {
-			List<WorkItem> entities = service.query(workItemQuery.buildSpecification(),
-												    workItemQuery.buildPageable());
-			return Response.ok().entity(entities).build();
-		});
+	public Response getWorkItems(@BeanParam WorkItemQueryBean workItemQuery) {
+		return super.get(workItemQuery.buildSpecification(), workItemQuery.buildPageable());
+	}
+	
+	@GET
+	@Path("/count")
+	public Response countWorkItem(@BeanParam WorkItemQueryBean workItemQuery) {
+		return super.count(workItemQuery.buildSpecification());
 	}
 
 	@PUT
-	public Response update(@Valid WorkItem entity) {
+	public Response updateWorkItem(@Valid WorkItem entity) {
 		return super.update(entity);
 	}
 
 	@DELETE
-	public Response delete(@Valid WorkItem entity) {
+	public Response deleteWorkItem(@Valid WorkItem entity) {
 		return super.delete(entity);
 	}
 

@@ -12,8 +12,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Component;
@@ -32,33 +30,34 @@ public class UserResource extends BaseResource<User, UserService> {
 	}
 
 	@POST
-	public Response save(@Valid User entity) {
+	public Response createUser(@Valid User entity) {
 		return super.create(entity);
 	}
 
 	@GET
 	@Path("/{id}")
-	public Response get(@PathParam("id") Long id) {
+	public Response getUser(@PathParam("id") Long id) {
 		return super.byId(id);
 	}
 
 	@GET
-	public Response getUsersBySpec(@BeanParam UserQueryBean userQuery) {
-		return serviceRequest(() -> {
-			List<User> entities = service.query(
-					userQuery.buildSpecification(),
-					userQuery.buildPageable());
-			return Response.ok().entity(entities).build();
-		});
+	public Response getUsers(@BeanParam UserQueryBean userQuery) {
+		return super.get(userQuery.buildSpecification(), userQuery.buildPageable());
+	}
+	
+	@GET
+	@Path("/count")
+	public Response countUsers(@BeanParam UserQueryBean userQuery) {
+		return super.count(userQuery.buildSpecification());
 	}
 
 	@PUT
-	public Response update(@Valid User entity) {
+	public Response updateUser(@Valid User entity) {
 		return super.update(entity);
 	}
 
 	@DELETE
-	public Response delete(@Valid User entity) {
+	public Response deleteUser(@Valid User entity) {
 		return super.delete(entity);
 	}
 
