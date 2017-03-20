@@ -12,11 +12,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Component;
 
 import se.kawi.taskmanager.model.Team;
+import se.kawi.taskmanager.model.User;
 import se.kawi.taskmanager.service.TeamService;
 
 @Component
@@ -44,11 +47,50 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 	public Response getTeams(@BeanParam TeamQueryBean teamQuery) {
 		return super.get(teamQuery.buildSpecification(), teamQuery.buildPageable());
 	}
-	
+
 	@GET
 	@Path("/count")
 	public Response countTeam(@BeanParam TeamQueryBean teamQuery) {
 		return super.count(teamQuery.buildSpecification());
+	}
+
+	@GET
+	@Path("/{id}/users")
+	public Response getTeamMembers(@BeanParam TeamQueryBean teamQuery, @PathParam("id") Long id) {
+		return serviceRequest(() -> {
+			List<User> teamMembers = service.getTeamMembers(id, teamQuery.buildPageable());
+			return Response.ok().entity(teamMembers).build();
+		});
+	}
+
+	@PUT
+	@Path("/{id}/users")
+	public Response addTeamMember(@Valid User user, @PathParam("id") Long id) {
+		return serviceRequest(() -> {
+			Team team = service.getById(id);
+			if (team != null) {
+				team.addUser(user);
+				service.save(team);
+				return Response.noContent().build();
+			} else {
+				return Response.status(404).build();
+			}
+		});
+	}
+
+	@DELETE
+	@Path("/{id}/users")
+	public Response removeTeamMember(@Valid User user, @PathParam("id") Long id) {
+		return serviceRequest(() -> {
+			Team team = service.getById(id);
+			if (team != null) {
+				team.removeUser(user);
+				service.save(team);
+				return Response.noContent().build();
+			} else {
+				return Response.status(404).build();
+			}
+		});
 	}
 
 	@PUT

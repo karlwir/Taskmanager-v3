@@ -1,6 +1,7 @@
 package se.kawi.taskmanager.model;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Table;
 
@@ -48,6 +49,19 @@ public class Team extends AbstractEntity {
 		this.users = users;
 	}
 
+	public Team addUser(User user) {
+		this.users.add(user);
+		return this;
+	}
+	
+	public Team removeUser(User user) {
+		Set<User> newUsers = users.stream()
+				.filter(u -> !u.getId().equals(user.getId()))
+				.collect(Collectors.toSet());
+		this.users = newUsers;
+		return this;
+	}
+	
 	public boolean isActiveTeam() {
 		return activeTeam;
 	}
@@ -61,5 +75,6 @@ public class Team extends AbstractEntity {
 	public String toString() {
 		return String.format("Team: %s, %s, active:%s", getId(), teamName, activeTeam);
 	}
+
 
 }
