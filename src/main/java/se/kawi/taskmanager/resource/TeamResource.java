@@ -50,7 +50,7 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 
 	@GET
 	@Path("/count")
-	public Response countTeam(@BeanParam TeamQueryBean teamQuery) {
+	public Response countTeams(@BeanParam TeamQueryBean teamQuery) {
 		return super.count(teamQuery.buildSpecification());
 	}
 
