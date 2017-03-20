@@ -1,11 +1,9 @@
 package se.kawi.taskmanager.model;
 
+import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "issues")
@@ -44,9 +42,12 @@ public class Issue extends AbstractEntity {
 		return openIssue;
 	}
 
-	@JsonIgnore
 	public WorkItem getWorkitem() {
 		return workItem;
+	}
+	
+	public void setWorkItem(WorkItem workItem) {
+		this.workItem = workItem;
 	}
 	
 	public Long getWorkitemId() {
@@ -55,10 +56,6 @@ public class Issue extends AbstractEntity {
 	
 	public void setTitle(String title) {
 		this.title = title;
-	}
-	
-	public void setWorkItem(WorkItem workItem) {
-		this.workItem = workItem;
 	}
 
 	public Issue setDescription(String description) {

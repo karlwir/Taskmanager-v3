@@ -1,12 +1,13 @@
 package se.kawi.taskmanager.model;
 
-import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.Table;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
 @Entity
 @Table(name = "teams")
@@ -18,8 +19,8 @@ public class Team extends AbstractEntity {
 	@Column(nullable = false)
 	private boolean activeTeam;
 	
-	@OneToMany(mappedBy = "team", fetch=FetchType.EAGER)
-	Collection<User> users;
+	@ManyToMany(fetch=FetchType.EAGER)
+	Set<User> users;
 
 	protected Team() {}
 
@@ -31,27 +32,26 @@ public class Team extends AbstractEntity {
 	public String getTeamName() {
 		return teamName;
 	}
+	public Team setTeamName(String teamName) {
+		this.teamName = teamName;
+		return this;
+	}
 
-	public Collection<User> getUsers() {
+	public Set<User> getUsers() {
 		return users;
+	}
+	
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 
 	public boolean isActiveTeam() {
 		return activeTeam;
 	}
 
-	public Team setTeamName(String teamName) {
-		this.teamName = teamName;
-		return this;
-	}
-
 	public Team setActiveTeam(boolean activeTeam) {
 		this.activeTeam = activeTeam;
 		return this;
-	}
-
-	public void setUsers(Collection<User> users) {
-		this.users = users;
 	}
 
 	@Override

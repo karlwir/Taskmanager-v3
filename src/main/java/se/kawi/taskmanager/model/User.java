@@ -1,14 +1,14 @@
 package se.kawi.taskmanager.model;
 
-import java.util.Collection;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -27,12 +27,13 @@ public class User extends AbstractEntity {
 	@Column(nullable = false)
 	private boolean activeUser;
 	
-	@JsonIgnore
-	@ManyToOne
-	private Team team;
+	@ManyToMany(mappedBy = "users", fetch=FetchType.EAGER)
+	@JsonIgnoreProperties("users")
+	private Set<Team> teams;
 	
-	@OneToMany(mappedBy = "user")
-	private Collection<WorkItem> workitems;
+	@OneToMany(mappedBy = "user", fetch=FetchType.EAGER)
+	@JsonIgnoreProperties("users")
+	private Set<WorkItem> workItems;
 	
 	protected User() {}
 
@@ -59,8 +60,13 @@ public class User extends AbstractEntity {
 		return activeUser;
 	}
 
-	public Team getTeam() {
-		return team;
+	public Set<Team> getTeams() {
+		return teams;
+	}
+
+	public User setTeams(Set<Team> teams) {
+		this.teams = teams;
+		return this;
 	}
 	
 	public User setFirstName(String firstname) {
@@ -82,15 +88,19 @@ public class User extends AbstractEntity {
 		this.activeUser = activeUser;
 		return this;
 	}
-
-	public User setTeam(Team team) {
-		this.team = team;
+	
+	public User setWorkItems(Set<WorkItem> workItems) {
+		this.workItems = workItems;
 		return this;
+	}
+
+	public Set<WorkItem> getWorkItems() {
+		return workItems;
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("User: %s, %s, %s, %s, active:%s, team:%s", getId(), username, firstname, lastname, activeUser, team);
+		return String.format("User: %s, %s, %s, %s, active:%s", getId(), username, firstname, lastname, activeUser);
 	}
 	
 	@Override
