@@ -1,41 +1,43 @@
 package se.kawi.taskmanager.resource;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
+import javax.persistence.criteria.Predicate;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 
-import se.kawi.taskmanager.model.WorkItem;
-import se.kawi.taskmanager.model.WorkItem.Status;
+import org.springframework.data.jpa.domain.Specification;
 
-public class WorkItemQueryBean extends PagingQueryBean {
+import se.kawi.taskmanager.model.WorkItem;
+import se.kawi.taskmanager.model.WorkItem_;
+
+public class WorkItemQueryBean extends BaseQueryBean {
 
 	@QueryParam("title") @DefaultValue("") private String title;
 	@QueryParam("description") @DefaultValue("") private String description;
 	@QueryParam("status") @DefaultValue("") private String status;
 
-	public String getTitle() {
-		return title;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-	
-	public List<Status> getStatus() {
-		List<Status> status = new ArrayList<>();;
-		if(this.status.equals("")) {
-			status = Arrays.asList(Status.values());
-			return status;		
-		}
-		try {
-			status.add(WorkItem.Status.valueOf(this.status.toUpperCase()));
-			return status;		
-		} catch (IllegalArgumentException e) {
-			return null;
-		}
-	}
+	Specification<WorkItem> buildSpecification() {
+		return (root, query, cb) -> {
+			final List<Predicate> predicates = new ArrayList<>();
 
+			if (!title.equals("")) {
+				predicates.add(cb.like(root.get(WorkItem_.title), "%" + title + "%"));
+			}
+			if (!description.equals("")) {
+				predicates.add(cb.like(root.get(WorkItem_.description), "%" + description + "%"));
+			}
+			if (!status.equals("")) {
+				WorkItem.Status statusEnum;
+				try {
+					statusEnum = (WorkItem.Status.valueOf(this.status.toUpperCase()));
+					predicates.add(cb.equal(root.get(WorkItem_.status), statusEnum));
+				} catch (IllegalArgumentException e) {}				
+			}
+			
+			return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+		};
+		
+	}
 }

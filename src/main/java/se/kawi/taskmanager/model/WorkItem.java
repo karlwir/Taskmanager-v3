@@ -82,10 +82,6 @@ public class WorkItem extends AbstractEntity {
 		return this;
 	}
 	
-	public Long getUserId() {
-		return user != null ? user.getId() : null;
-	}
-	
 	public boolean hasAssignUser() {
 		return user != null;
 	}

@@ -1,79 +1,43 @@
 package se.kawi.taskmanager.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.criteria.Predicate;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 
 import org.springframework.data.jpa.domain.Specification;
 
 import se.kawi.taskmanager.model.User;
+import se.kawi.taskmanager.model.User_;
 
-public class UserQueryBean extends PagingQueryBean {
+public class UserQueryBean extends BaseQueryBean {
 	
 	@QueryParam("firstname") @DefaultValue("") private String firstname;
 	@QueryParam("lastname") @DefaultValue("") private String lastname;
 	@QueryParam("username") @DefaultValue("") private String username;
 	@QueryParam("active") @DefaultValue("") private String activeUser;
-	@QueryParam("teamid") @DefaultValue("-1") private Long teamId;
 
-	String getFirstname() {
-		return firstname;
-	}
-	
-	String getLastname() {
-		return lastname;
-	}
-	
-	String getUsername() {
-		return username;
+	Specification<User> buildSpecification() {
+		return (root, query, cb) -> {
+			List<Predicate> predicates = new ArrayList<>();
+
+			if (!firstname.equals("")) {
+				predicates.add(cb.like(root.get(User_.firstname), "%" + firstname + "%"));
+			}
+			if (!lastname.equals("")) {
+				predicates.add(cb.like(root.get(User_.lastname), "%" + lastname + "%"));
+			}
+			if (!username.equals("")) {
+				predicates.add(cb.equal(root.get(User_.username), username));
+			}
+			if (activeUser.toLowerCase().equals("true") || activeUser.toLowerCase().equals("false")) {
+				predicates.add(cb.equal(root.get(User_.activeUser), Boolean.parseBoolean(activeUser)));
+			}
+
+			return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+		};
 	}
 
-	public String getActiveUser() {
-		return activeUser.toLowerCase();
-	}
-	
-	public Long getTeamId() {
-		return teamId;
-	}
-
-	public Specification<User> getSpec() {
-		return null;
-	}
-	
-//	final class UserSpecifications {
-//		
-//		private EntityManager em;
-//		
-//		public UserSpecifications(EntityManager em) {
-//			this.em = em;
-//		}
-//		
-//		String firstname = "sven";
-//		String lastname = "svensson";
-//
-//		CriteriaBuilder builder = em.getCriteriaBuilder();
-//		CriteriaQuery<User> query = builder.createQuery(User.class);
-//		Root<User> root = query.from(User.class);
-//		
-//		Predicate harFirstname = builder.equal(root.get(User_.firstName), firstname);
-//		Predicate hasLastname = builder.equal(root.get(User_.lastname), lastname); 
-//		query.where(builder.and(hasBirthday, isLongTermCustomer));
-//		em.createQuery(query.select(root)).getResultList();
-
-//		public Specification<User> userHasBirthday() {
-//			return new Specification<User>() {
-//				@Override
-//				Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-//					return cb.equal(root.get(User_.firstName), firstname);
-//			    };
-//			}
-//		}
-		
-//		public static Specification<Customer> isLongTermCustomer() {
-//		    return new Specification<Customer> {
-//		      public Predicate toPredicate(Root<T> root, CriteriaQuery query, CriteriaBuilder cb) {
-//		        return cb.lessThan(root.get(Customer_.createdAt), new LocalDate.minusYears(2));
-//		      }
-//		    };
-//		  }
-//	}
 }

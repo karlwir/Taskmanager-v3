@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,7 +22,8 @@ public class Team extends AbstractEntity {
 	private boolean activeTeam;
 	
 	@ManyToMany(fetch=FetchType.EAGER)
-	Set<User> users;
+	@JsonIgnoreProperties("teams")
+	private Set<User> users;
 
 	protected Team() {}
 

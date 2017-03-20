@@ -1,28 +1,41 @@
 package se.kawi.taskmanager.resource;
 
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.QueryParam;
+import java.util.ArrayList;
+import java.util.List;
 
-public class IssueQueryBean extends PagingQueryBean {
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.DefaultValue;
+import javax.persistence.criteria.Predicate;
+
+import org.springframework.data.jpa.domain.Specification;
+
+import se.kawi.taskmanager.model.Issue;
+import se.kawi.taskmanager.model.Issue_;
+
+public class IssueQueryBean extends BaseQueryBean {
 	
 	@QueryParam("title") @DefaultValue("") private String title;
 	@QueryParam("description") @DefaultValue("") private String description;
-	@QueryParam("workitemid") @DefaultValue("") private String workitemid;
-	@QueryParam("open") @DefaultValue("true") private String open;
-	
-	public String getTitle() {
-		return title;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-	
-	public String getWorkItemId() {
-		return workitemid;
+	@QueryParam("open") @DefaultValue("") private String openissue;
+
+	Specification<Issue> buildSpecification() {
+		return (root, query, cb) -> {
+
+			List<Predicate> predicates = new ArrayList<>();
+
+			if (!title.equals("")) {
+				predicates.add(cb.like(root.get(Issue_.title), "%" + title + "%"));
+			}
+			if (!description.equals("")) {
+				predicates.add(cb.like(root.get(Issue_.description), "%" + description + "%"));
+			}
+			if (openissue.toLowerCase().equals("true") || openissue.toLowerCase().equals("false")) {
+				predicates.add(cb.equal(root.get(Issue_.openIssue), Boolean.parseBoolean(openissue)));
+			}
+
+			return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+
+		};
 	}
 
-	public Boolean isOpenIssue() {
-		return Boolean.parseBoolean(open);
-	}
 }
