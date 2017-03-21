@@ -69,8 +69,7 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 		return serviceRequest(() -> {
 			Team team = service.getById(id);
 			if (team != null) {
-				team.addUser(user);
-				service.save(team);
+				service.addTeamMember(user, team);
 				return Response.noContent().build();
 			} else {
 				return Response.status(404).build();
@@ -84,8 +83,7 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 		return serviceRequest(() -> {
 			Team team = service.getById(id);
 			if (team != null) {
-				team.removeUser(user);
-				service.save(team);
+				service.removeTeamMember(user, team);
 				return Response.noContent().build();
 			} else {
 				return Response.status(404).build();

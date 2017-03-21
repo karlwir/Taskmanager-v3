@@ -21,6 +21,7 @@ public class UserService extends BaseService<User, UserRepository> {
 		super(userRepository, serviceTransaction);
 	}
 
+	@Override
 	public User save(User user) throws ServiceException {
 		return transaction(() -> {
 			if (user.getUsername().length() < USERNAME_MIN_LENGTH) {
