@@ -20,6 +20,7 @@ public class WorkItemQueryBean extends BaseQueryBean {
 	@QueryParam("title") @DefaultValue("") private String title;
 	@QueryParam("description") @DefaultValue("") private String description;
 	@QueryParam("status") @DefaultValue("") private String status;
+	@QueryParam("hasissues") @DefaultValue("") private String hasIssues;
 	
 	private User user;
 	
@@ -49,7 +50,13 @@ public class WorkItemQueryBean extends BaseQueryBean {
 					statusEnum = (WorkItem.Status.valueOf(this.status.toUpperCase()));
 					andPredicates.add(cb.equal(root.get(WorkItem_.status), statusEnum));
 				} catch (IllegalArgumentException e) {}				
-			}	
+			}
+			if (hasIssues.toLowerCase().equals("true")) {
+				andPredicates.add(cb.isNotEmpty(root.get(WorkItem_.issues)));
+			}
+			if (hasIssues.toLowerCase().equals("false")) {
+				andPredicates.add(cb.isEmpty(root.get(WorkItem_.issues)));
+			}
 			if (user != null) {
 				andPredicates.add(cb.isMember(user, root.get(WorkItem_.users)));
 			}

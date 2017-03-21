@@ -50,10 +50,6 @@ public class Issue extends AbstractEntity {
 		this.workItem = workItem;
 	}
 	
-	public Long getWorkitemId() {
-		return workItem != null ? workItem.getId() : null;
-	}
-	
 	public void setTitle(String title) {
 		this.title = title;
 	}
