@@ -20,6 +20,7 @@ import se.kawi.taskmanager.repository.UserRepository;
 public class UserService extends BaseService<User, UserRepository> {
 
 	private static final int USERNAME_MIN_LENGTH = 6;
+	private static final int USER_MAX_WORKITEMS = 5;
 
 	@Autowired
 	public UserService(UserRepository userRepository, ServiceTransaction serviceTransaction) {
@@ -31,12 +32,14 @@ public class UserService extends BaseService<User, UserRepository> {
 	}
 	
 	public User assignWorkItem(WorkItem workItemInput, User user) throws ServiceException {
-		if(user.isActiveUser()) {			
+		if(!user.isActiveUser()) {			
+			throw new ServiceException("Cant assign to inactive user", new WebApplicationException("Cant assign to inactive user", 400));
+		} else if(user.getWorkItems().size() >= USER_MAX_WORKITEMS) {
+			throw new ServiceException("User cant be assigned to more items", new WebApplicationException("User cant be assigned to more items", 400));
+		} else {
 			WorkItem workItem = workItemService.getById(workItemInput.getId());
 			user.addWorkItem(workItem);
 			return save(user);
-		} else {
-			throw new ServiceException("Cant assign to inactive user", new WebApplicationException("Cant assign to inactive user", 400));
 		}
 	}
 	
