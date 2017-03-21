@@ -28,7 +28,6 @@ public class TeamService extends BaseService<Team, TeamRepository> {
 
 	public List<User> getTeamMembers(Specification<User> spec, Pageable pageable) throws ServiceException {
 		return userService.query(spec, pageable);
-//		return repository.findTeamMembers(id, Pageable);
 	}
 	
 	public Team addTeamMember(User userInput, Team team) throws ServiceException {
