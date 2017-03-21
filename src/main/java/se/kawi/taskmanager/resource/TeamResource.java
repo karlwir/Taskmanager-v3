@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import se.kawi.taskmanager.model.Team;
 import se.kawi.taskmanager.model.User;
+import se.kawi.taskmanager.model.WorkItem;
 import se.kawi.taskmanager.service.TeamService;
 
 @Component
@@ -106,5 +107,28 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 			}
 		});
 	}
+	
+	@GET
+	@Path("/{id}/workitems")
+	public Response getTeamWorkItems(@BeanParam WorkItemQueryBean workItemQuery, @PathParam("id") Long id) {
+		return serviceRequest(() -> {
+			Team team = service.getById(id);
+			if (team != null) {
+				workItemQuery.setUsers(team.getUsers());
+				List<WorkItem> teamWorkItems = service.getTeamWorkItems(workItemQuery.buildSpecification(), workItemQuery.buildPageable());
+				return Response.ok().entity(teamWorkItems).build();
+			}
+			return Response.status(404).build();
+		});
+	}
 
 }
+
+
+
+
+
+
+
+
+

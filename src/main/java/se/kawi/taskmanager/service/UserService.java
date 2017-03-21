@@ -60,7 +60,7 @@ public class UserService extends BaseService<User, UserRepository> {
 					 .forEach(w -> {
 						try {
 							w.setStatus(Status.UNSTARTED);
-							withdrawWorkItem(w, user);
+							user.removeWorkItem(w);
 							workItemService.save(w);
 						} catch (ServiceException e) {
 							e.printStackTrace();
