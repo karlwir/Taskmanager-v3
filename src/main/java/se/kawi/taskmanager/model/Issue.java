@@ -1,6 +1,9 @@
 package se.kawi.taskmanager.model;
 
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -19,6 +22,7 @@ public class Issue extends AbstractEntity {
 	private boolean openIssue;
 	
 	@ManyToOne
+	@JsonIgnoreProperties("issues")
 	private WorkItem workItem;
 
 	protected Issue() {}

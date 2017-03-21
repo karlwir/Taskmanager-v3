@@ -12,10 +12,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Component;
 
+import se.kawi.taskmanager.model.Issue;
 import se.kawi.taskmanager.model.WorkItem;
 import se.kawi.taskmanager.service.WorkItemService;
 
@@ -59,6 +62,20 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	@DELETE
 	public Response deleteWorkItem(@Valid WorkItem entity) {
 		return super.delete(entity);
+	}
+	
+	@GET
+	@Path("{id}/issues")
+	public Response getWorkItemIssues(@BeanParam IssueQueryBean issueQuery, @PathParam("id") Long id) {
+		return serviceRequest(() -> {
+			WorkItem workItem = service.getById(id);
+			if (workItem != null) {
+				issueQuery.setWorkItem(workItem);
+				List<Issue> workItemsIssues = service.getWorkItemIssues(issueQuery.buildSpecification(), issueQuery.buildPageable());
+				return Response.ok().entity(workItemsIssues).build();
+			}
+			return Response.status(404).build();
+		});
 	}
 
 }

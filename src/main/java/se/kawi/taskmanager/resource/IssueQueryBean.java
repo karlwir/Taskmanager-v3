@@ -11,12 +11,19 @@ import org.springframework.data.jpa.domain.Specification;
 
 import se.kawi.taskmanager.model.Issue;
 import se.kawi.taskmanager.model.Issue_;
+import se.kawi.taskmanager.model.WorkItem;
 
 public class IssueQueryBean extends BaseQueryBean {
 	
 	@QueryParam("title") @DefaultValue("") private String title;
 	@QueryParam("description") @DefaultValue("") private String description;
 	@QueryParam("open") @DefaultValue("") private String openissue;
+	
+	private WorkItem workItem;
+	
+	public void setWorkItem(WorkItem workItem) {
+		this.workItem = workItem;
+	}
 
 	Specification<Issue> buildSpecification() {
 		return (root, query, cb) -> {
@@ -31,6 +38,9 @@ public class IssueQueryBean extends BaseQueryBean {
 			}
 			if (openissue.toLowerCase().equals("true") || openissue.toLowerCase().equals("false")) {
 				predicates.add(cb.equal(root.get(Issue_.openIssue), Boolean.parseBoolean(openissue)));
+			}
+			if (workItem != null) {
+				predicates.add(cb.equal(root.get(Issue_.workItem), workItem));
 			}
 
 			return cb.and(predicates.toArray(new Predicate[predicates.size()]));
