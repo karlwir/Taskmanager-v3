@@ -1,6 +1,7 @@
 package se.kawi.taskmanager.resource;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -33,11 +34,12 @@ abstract class BaseQueryBean {
 			for(int i = 0 ; i < possibleSortArray.length; i++) {
 				possibleSortSet.add(possibleSortArray[i].getName());
 			}
-			possibleSortSet.add("id");
 
 			for(int i = 0; i < requestedSortArray.length; i++) {
 				requestedSortSet.add(requestedSortArray[i]);
 			}
+			requestedSortSet.add("id");
+			possibleSortSet.add("id");
 			
 			requestedSortSet.retainAll(possibleSortSet);
 			sortArray = new String[requestedSortSet.size()];
@@ -47,7 +49,6 @@ abstract class BaseQueryBean {
 		if(sort.toLowerCase().equals("desc")) {
 			return new PageRequest(page, size, Direction.DESC, sortArray);
 		}
-		
 		return new PageRequest(page, size, Direction.ASC, sortArray);
 	}
 }
