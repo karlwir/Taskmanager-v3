@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 @Entity
 @Table(name = "users")
@@ -31,7 +30,7 @@ public class User extends AbstractEntity {
 	@JsonIgnoreProperties("users")
 	private Set<Team> teams;
 	
-	@OneToMany(mappedBy = "user", fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JsonIgnoreProperties("users")
 	private Set<WorkItem> workItems;
 	

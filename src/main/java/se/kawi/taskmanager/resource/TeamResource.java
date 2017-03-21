@@ -54,11 +54,23 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 		return super.count(teamQuery.buildSpecification());
 	}
 
+	@PUT
+	public Response updateTeam(@Valid Team entity) {
+		return super.update(entity);
+	}
+
+	@DELETE
+	public Response deleteTeam(@Valid Team entity) {
+		return super.delete(entity);
+	}
+
 	@GET
 	@Path("/{id}/users")
-	public Response getTeamMembers(@BeanParam TeamQueryBean teamQuery, @PathParam("id") Long id) {
+	public Response getTeamMembers(@BeanParam UserQueryBean userQuery, @PathParam("id") Long id) {
 		return serviceRequest(() -> {
-			List<User> teamMembers = service.getTeamMembers(id, teamQuery.buildPageable());
+			Team team = service.getById(id);
+			userQuery.setTeam(team);
+			List<User> teamMembers = service.getTeamMembers(userQuery.buildSpecification(), userQuery.buildPageable());
 			return Response.ok().entity(teamMembers).build();
 		});
 	}
@@ -89,16 +101,6 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 				return Response.status(404).build();
 			}
 		});
-	}
-
-	@PUT
-	public Response updateTeam(@Valid Team entity) {
-		return super.update(entity);
-	}
-
-	@DELETE
-	public Response deleteTeam(@Valid Team entity) {
-		return super.delete(entity);
 	}
 
 }

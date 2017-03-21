@@ -9,6 +9,7 @@ import javax.ws.rs.QueryParam;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import se.kawi.taskmanager.model.Team;
 import se.kawi.taskmanager.model.User;
 import se.kawi.taskmanager.model.User_;
 
@@ -18,6 +19,12 @@ public class UserQueryBean extends BaseQueryBean {
 	@QueryParam("lastname") @DefaultValue("") private String lastname;
 	@QueryParam("username") @DefaultValue("") private String username;
 	@QueryParam("active") @DefaultValue("") private String activeUser;
+	
+	private Team team;
+	
+	public void setTeam(Team team) {
+		this.team = team;
+	}
 
 	Specification<User> buildSpecification() {
 		return (root, query, cb) -> {
@@ -34,6 +41,9 @@ public class UserQueryBean extends BaseQueryBean {
 			}
 			if (activeUser.toLowerCase().equals("true") || activeUser.toLowerCase().equals("false")) {
 				predicates.add(cb.equal(root.get(User_.activeUser), Boolean.parseBoolean(activeUser)));
+			}
+			if (team != null) {
+				predicates.add(cb.isMember(team, root.get(User_.teams)));
 			}
 
 			return cb.and(predicates.toArray(new Predicate[predicates.size()]));

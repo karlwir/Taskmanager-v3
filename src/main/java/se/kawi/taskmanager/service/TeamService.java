@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import se.kawi.taskmanager.model.Team;
 import se.kawi.taskmanager.model.User;
@@ -25,8 +26,9 @@ public class TeamService extends BaseService<Team, TeamRepository> {
 		super(teamRepository, serviceTransaction);
 	}
 
-	public List<User> getTeamMembers(Long id, Pageable Pageable) {
-		return repository.findTeamMembers(id, Pageable);
+	public List<User> getTeamMembers(Specification<User> spec, Pageable pageable) throws ServiceException {
+		return userService.query(spec, pageable);
+//		return repository.findTeamMembers(id, Pageable);
 	}
 	
 	public Team addTeamMember(User userInput, Team team) throws ServiceException {

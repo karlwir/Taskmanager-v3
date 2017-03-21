@@ -9,10 +9,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 
 @Entity
 @Table(name = "workitems")
@@ -27,8 +27,8 @@ public class WorkItem extends AbstractEntity {
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	
-	@ManyToOne
-	private User user;
+	@ManyToMany(mappedBy = "workItems", fetch=FetchType.EAGER)
+	private Set<User> users;
 
 	@OneToMany(mappedBy = "workItem", fetch=FetchType.EAGER)
 	@JsonIgnoreProperties("workitem")
@@ -73,17 +73,17 @@ public class WorkItem extends AbstractEntity {
 		return issues;
 	}
 
-	public User getUser() {
-		return user;
+	public Set<User> getUser() {
+		return users;
 	}
 	
-	public WorkItem setUser(User user) {
-		this.user = user;
+	public WorkItem setUser(Set<User> users) {
+		this.users = users;
 		return this;
 	}
 	
-	public boolean hasAssignUser() {
-		return user != null;
+	public boolean hasAssignUsers() {
+		return users != null;
 	}
 
 	public enum Status {
