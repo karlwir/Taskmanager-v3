@@ -28,6 +28,7 @@ public class WorkItem extends AbstractEntity {
 	private Status status;
 	
 	@ManyToMany(mappedBy = "workItems", fetch=FetchType.EAGER)
+	@JsonIgnoreProperties({"workItems",  "teams"})
 	private Set<User> users;
 
 	@OneToMany(mappedBy = "workItem", fetch=FetchType.EAGER)
@@ -73,11 +74,11 @@ public class WorkItem extends AbstractEntity {
 		return issues;
 	}
 
-	public Set<User> getUser() {
+	public Set<User> getUsers() {
 		return users;
 	}
 	
-	public WorkItem setUser(Set<User> users) {
+	public WorkItem setUsers(Set<User> users) {
 		this.users = users;
 		return this;
 	}

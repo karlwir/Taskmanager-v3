@@ -12,11 +12,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Component;
 
 import se.kawi.taskmanager.model.User;
+import se.kawi.taskmanager.model.WorkItem;
 import se.kawi.taskmanager.service.UserService;
 
 @Component
@@ -59,6 +62,50 @@ public class UserResource extends BaseResource<User, UserService> {
 	@DELETE
 	public Response deleteUser(@Valid User entity) {
 		return super.delete(entity);
+	}
+	
+	@GET
+	@Path("/{id}/workitems")
+	public Response getuserWorkItems(@BeanParam WorkItemQueryBean workItemQuery, @PathParam("id") Long id) {
+		return serviceRequest(() -> {
+			User user = service.getById(id);
+			if (user != null) {
+				workItemQuery.setUser(user);
+				List<WorkItem> userWorkItems = service.getUserWorkItems(workItemQuery.buildSpecification(), workItemQuery.buildPageable());
+				return Response.ok().entity(userWorkItems).build();
+			} else {
+				return Response.status(404).build();
+			}
+			
+		});	
+	}
+	
+	@PUT
+	@Path("/{id}/workitems")
+	public Response assignWorkItem(@Valid WorkItem workItem, @PathParam("id") Long id) {
+		return serviceRequest(() -> {
+			User user = service.getById(id);
+			if (user != null) {
+				service.assignWorkItem(workItem, user);
+				return Response.noContent().build();
+			} else {
+				return Response.status(404).build();
+			}
+		});
+	}
+	
+	@DELETE
+	@Path("/{id}/workitems")
+	public Response withdrawWorkItem(@Valid WorkItem workItem, @PathParam("id") Long id) {
+		return serviceRequest(() -> {
+			User user = service.getById(id);
+			if (user != null) {
+				service.withdrawWorkItem(workItem, user);
+				return Response.noContent().build();
+			} else {
+				return Response.status(404).build();
+			}
+		});		
 	}
 
 }

@@ -1,6 +1,7 @@
 package se.kawi.taskmanager.model;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -95,6 +96,19 @@ public class User extends AbstractEntity {
 
 	public Set<WorkItem> getWorkItems() {
 		return workItems;
+	}
+
+	public User addWorkItem(WorkItem workItem) {
+		this.workItems.add(workItem);
+		return this;
+	}
+	
+	public User removeWorkItem(WorkItem workItem) {
+		Set<WorkItem> newWorkItems = workItems.stream()
+				.filter(w -> !w.getId().equals(workItem.getId()))
+				.collect(Collectors.toSet());
+		setWorkItems(newWorkItems);
+		return this;
 	}
 	
 	@Override

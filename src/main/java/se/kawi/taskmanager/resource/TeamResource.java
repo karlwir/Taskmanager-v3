@@ -69,9 +69,13 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 	public Response getTeamMembers(@BeanParam UserQueryBean userQuery, @PathParam("id") Long id) {
 		return serviceRequest(() -> {
 			Team team = service.getById(id);
-			userQuery.setTeam(team);
-			List<User> teamMembers = service.getTeamMembers(userQuery.buildSpecification(), userQuery.buildPageable());
-			return Response.ok().entity(teamMembers).build();
+			if (team != null) {
+				userQuery.setTeam(team);
+				List<User> teamMembers = service.getTeamMembers(userQuery.buildSpecification(), userQuery.buildPageable());
+				return Response.ok().entity(teamMembers).build();
+			} else {
+				return Response.status(404).build();
+			}
 		});
 	}
 

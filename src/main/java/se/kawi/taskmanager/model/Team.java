@@ -58,7 +58,7 @@ public class Team extends AbstractEntity {
 		Set<User> newUsers = users.stream()
 				.filter(u -> !u.getId().equals(user.getId()))
 				.collect(Collectors.toSet());
-		this.users = newUsers;
+		setUsers(newUsers);
 		return this;
 	}
 	

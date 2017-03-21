@@ -12,7 +12,7 @@ public abstract class WorkItem_ extends se.kawi.taskmanager.model.AbstractEntity
 
 	public static volatile SingularAttribute<WorkItem, String> description;
 	public static volatile SingularAttribute<WorkItem, String> title;
-	public static volatile SingularAttribute<WorkItem, User> user;
+	public static volatile SetAttribute<WorkItem, User> users;
 	public static volatile SetAttribute<WorkItem, Issue> issues;
 	public static volatile SingularAttribute<WorkItem, Status> status;
 

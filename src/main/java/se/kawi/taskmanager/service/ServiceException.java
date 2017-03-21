@@ -13,6 +13,11 @@ public class ServiceException extends Exception {
 		webApplicationException = new WebApplicationException(500);
 	}
 	
+	public ServiceException(String message, WebApplicationException webApplicationException) {
+		super(message);
+		this.webApplicationException = webApplicationException;
+	}
+	
 	public ServiceException(String message, Throwable cause) {
 		super(message, cause);
 		webApplicationException = new WebApplicationException(500);
