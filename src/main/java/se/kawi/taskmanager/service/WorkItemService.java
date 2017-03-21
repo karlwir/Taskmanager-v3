@@ -15,8 +15,8 @@ import se.kawi.taskmanager.repository.WorkItemRepository;
 public class WorkItemService extends BaseService<WorkItem, WorkItemRepository> {
 
 	@Autowired
-	public WorkItemService(WorkItemRepository workItemRepository, ServiceTransaction serviceTransaction) {
-		super(workItemRepository, serviceTransaction);
+	public WorkItemService(WorkItemRepository workItemRepository) {
+		super(workItemRepository);
 	}
 
 	public List<Issue> getWorkItemIssues(Specification<se.kawi.taskmanager.model.Issue> spec, Pageable pageable) throws ServiceException {

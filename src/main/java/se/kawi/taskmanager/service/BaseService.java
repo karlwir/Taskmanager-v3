@@ -19,34 +19,21 @@ import se.kawi.taskmanager.service.ServiceTransaction.Action;
 public abstract class BaseService<E extends AbstractEntity, R extends PagingAndSortingRepository<E, Long> & JpaSpecificationExecutor<E>> {
 
 	protected R repository;
+	@Autowired
 	protected ServiceTransaction serviceTransaction;
+	@Autowired
 	protected UserService userService;
+	@Autowired
 	protected WorkItemService workItemService;
+	@Autowired
 	protected IssueService issueService;
+	@Autowired
 	protected TeamService teamService;
 	
-	protected BaseService(R repository, ServiceTransaction serviceTransaction) {
+	protected BaseService(R repository) {
 		this.repository = repository;
-		this.serviceTransaction = serviceTransaction;
 	}
-	
-	@Autowired
-	public void setTeamService(TeamService teamService) {
-		this.teamService = teamService;
-	}
-	@Autowired	
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
-	@Autowired
-	public void setWorkItemService(WorkItemService workItemService) {
-		this.workItemService = workItemService;
-	}
-	@Autowired
-	public void setIssueService(IssueService issueService) {
-		this.issueService = issueService;
-	}
-	
+
 	protected <T> T execute(Action<T> action) throws ServiceException {
 		try {
 			return action.execute();			

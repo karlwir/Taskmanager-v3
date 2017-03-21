@@ -23,8 +23,8 @@ public class TeamService extends BaseService<Team, TeamRepository> {
 	private static final int USER_MAX_TEAMS = 3;
 
 	@Autowired
-	public TeamService(TeamRepository teamRepository, ServiceTransaction serviceTransaction) {
-		super(teamRepository, serviceTransaction);
+	public TeamService(TeamRepository teamRepository) {
+		super(teamRepository);
 	}
 
 	public List<User> getTeamMembers(Specification<User> spec, Pageable pageable) throws ServiceException {

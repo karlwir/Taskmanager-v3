@@ -23,8 +23,8 @@ public class UserService extends BaseService<User, UserRepository> {
 	private static final int USER_MAX_WORKITEMS = 5;
 
 	@Autowired
-	public UserService(UserRepository userRepository, ServiceTransaction serviceTransaction) {
-		super(userRepository, serviceTransaction);
+	public UserService(UserRepository userRepository) {
+		super(userRepository);
 	}
 	
 	public List<WorkItem> getUserWorkItems(Specification<WorkItem> spec, Pageable pageable) throws ServiceException {

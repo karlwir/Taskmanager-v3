@@ -11,8 +11,8 @@ import se.kawi.taskmanager.repository.IssueRepository;
 public class IssueService extends BaseService<Issue, IssueRepository> {
 
 	@Autowired
-	public IssueService(IssueRepository issueRepository, ServiceTransaction serviceTransaction) {
-		super(issueRepository, serviceTransaction);
+	public IssueService(IssueRepository issueRepository) {
+		super(issueRepository);
 	}
 
 }
