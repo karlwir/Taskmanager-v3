@@ -4,11 +4,10 @@ import java.util.List;
 
 import javax.ws.rs.WebApplicationException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -21,10 +20,31 @@ public abstract class BaseService<E extends AbstractEntity, R extends PagingAndS
 
 	protected R repository;
 	protected ServiceTransaction serviceTransaction;
+	protected UserService userService;
+	protected WorkItemService workItemService;
+	protected IssueService issueService;
+	protected TeamService teamService;
 	
 	protected BaseService(R repository, ServiceTransaction serviceTransaction) {
 		this.repository = repository;
 		this.serviceTransaction = serviceTransaction;
+	}
+	
+	@Autowired
+	public void setTeamService(TeamService teamService) {
+		this.teamService = teamService;
+	}
+	@Autowired	
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+	@Autowired
+	public void setWorkItemService(WorkItemService workItemService) {
+		this.workItemService = workItemService;
+	}
+	@Autowired
+	public void setIssueService(IssueService issueService) {
+		this.issueService = issueService;
 	}
 	
 	protected <T> T execute(Action<T> action) throws ServiceException {
@@ -69,12 +89,5 @@ public abstract class BaseService<E extends AbstractEntity, R extends PagingAndS
 			return null;
 		});
 	}
-	
-	protected Pageable createPageRequest(int page, int size, String sort) {
-		if(sort.equals("desc")) {
-			return new PageRequest(page, size, Direction.DESC, "id");
-		}
-		return new PageRequest(page, size, Direction.ASC, "id");
 
-	}
 }
