@@ -2,12 +2,15 @@ package se.kawi.taskmanager.service;
 
 import java.util.List;
 
+import javax.ws.rs.WebApplicationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import se.kawi.taskmanager.model.WorkItem;
+import se.kawi.taskmanager.model.WorkItem.Status;
 import se.kawi.taskmanager.model.Issue;
 import se.kawi.taskmanager.repository.WorkItemRepository;
 
@@ -21,5 +24,24 @@ public class WorkItemService extends BaseService<WorkItem, WorkItemRepository> {
 
 	public List<Issue> getWorkItemIssues(Specification<se.kawi.taskmanager.model.Issue> spec, Pageable pageable) throws ServiceException {
 		return issueService.query(spec, pageable);
+	}
+
+	public WorkItem addIssueToWorkItem(Issue issueInput, WorkItem workItem) throws ServiceException {
+		if (!workItem.getStatus().equals(Status.DONE)) {
+			throw new ServiceException("Work item needs to be done", new WebApplicationException("Work item needs to be done", 400));
+		}
+		else {
+			Issue issue = issueService.getById(issueInput.getId());
+			workItem.addIssue(issue);
+			workItem.setStatus(Status.UNSTARTED);
+			return save(workItem);
+		}
+		
+	}
+	
+	public WorkItem removeIssueFromWorkItem(Issue issueInput, WorkItem workItem) throws ServiceException {
+		Issue issue = issueService.getById(issueInput.getId());
+		workItem.removeIssue(issue);
+		return save(workItem);
 	}
 }

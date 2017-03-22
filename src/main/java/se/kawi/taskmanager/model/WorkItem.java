@@ -1,6 +1,7 @@
 package se.kawi.taskmanager.model;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Table;
 
@@ -73,18 +74,27 @@ public class WorkItem extends AbstractEntity {
 	public Set<Issue> getIssues() {
 		return issues;
 	}
-
-	public Set<User> getUsers() {
-		return users;
-	}
 	
-	public WorkItem setUsers(Set<User> users) {
-		this.users = users;
+	public WorkItem setIssues(Set<Issue> issues) {
+		this.issues = issues;
 		return this;
 	}
 	
-	public boolean hasAssignUsers() {
-		return users != null;
+	public WorkItem addIssue(Issue issue) {
+		this.issues.add(issue);
+		return this;
+	}
+	
+	public WorkItem removeIssue(Issue issue) {
+		Set<Issue> newIssues = issues.stream()
+				.filter(i -> !i.getId().equals(issue.getId()))
+				.collect(Collectors.toSet());
+		setIssues(newIssues);
+		return this;
+	}
+
+	public Set<User> getUsers() {
+		return users;
 	}
 
 	public enum Status {

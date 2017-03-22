@@ -77,5 +77,47 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 			return Response.status(404).build();
 		});
 	}
+	
+	@PUT
+	@Path("/{id}/issues")
+	public Response addIssueToWorkItem(@Valid Issue issue, @PathParam("id") Long id) {
+		return serviceRequest(() -> {
+			WorkItem workItem = service.getById(id);
+			if (workItem != null) {
+				service.addIssueToWorkItem(issue, workItem);
+				return Response.noContent().build();
+			} else {
+				return Response.status(404).build();
+			}
+		});
+	}
+	
+	@DELETE
+	@Path("/{id}/issues")
+	public Response removeIssueFromWorkItem(@Valid Issue issue, @PathParam("id") Long id) {
+		return serviceRequest(() -> {
+			WorkItem workItem = service.getById(id);
+			if (workItem != null) {
+				service.removeIssueFromWorkItem(issue, workItem);
+				return Response.noContent().build();
+			} else {
+				return Response.status(404).build();
+			}
+		});
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
