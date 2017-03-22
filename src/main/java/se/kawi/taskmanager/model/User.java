@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties(value = {"teams", "workItems"}, allowGetters=true, allowSetters=false)
 public class User extends AbstractEntity {
 
 	@Column(nullable = false, unique = true)
@@ -28,11 +29,11 @@ public class User extends AbstractEntity {
 	private boolean activeUser;
 	
 	@ManyToMany(mappedBy = "users", fetch=FetchType.EAGER)
-	@JsonIgnoreProperties("users")
+	@JsonIgnoreProperties(value = "users", allowGetters=false, allowSetters=false)
 	private Set<Team> teams;
 	
 	@ManyToMany(fetch=FetchType.EAGER)
-	@JsonIgnoreProperties("users")
+	@JsonIgnoreProperties(value = "users", allowGetters=false, allowSetters=false)
 	private Set<WorkItem> workItems;
 	
 	protected User() {}

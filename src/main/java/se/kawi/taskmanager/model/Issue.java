@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 @Table(name = "issues")
+@JsonIgnoreProperties(value = {"workItem"}, allowGetters=true, allowSetters=false)
 public class Issue extends AbstractEntity {
 	
 	@Column(nullable = false)
@@ -22,7 +23,7 @@ public class Issue extends AbstractEntity {
 	private boolean openIssue;
 	
 	@ManyToOne
-	@JsonIgnoreProperties("issues")
+	@JsonIgnoreProperties(value={"issues"}, allowGetters=false, allowSetters=false)
 	private WorkItem workItem;
 
 	protected Issue() {}

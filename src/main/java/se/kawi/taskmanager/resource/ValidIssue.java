@@ -31,9 +31,7 @@ public @interface ValidIssue {
 			return issue != null &&
 				   issue.getId() != null &&
 				   issue.getTitle() != null &&
-				   issue.getDescription() != null && 
-				   issue.getWorkItem() != null &&
-				   issue.getWorkItem().getId() != null;
+				   issue.getDescription() != null;
 		}
     }
 }

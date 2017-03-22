@@ -121,12 +121,3 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 	}
 
 }
-
-
-
-
-
-
-
-
-

@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 
 @Entity
 @Table(name = "teams")
+@JsonIgnoreProperties(value = {"users"}, allowGetters=true, allowSetters=false)
 public class Team extends AbstractEntity {
 
 	@Column(nullable = false, unique = true)
@@ -23,7 +24,7 @@ public class Team extends AbstractEntity {
 	private boolean activeTeam;
 	
 	@ManyToMany(fetch=FetchType.EAGER)
-	@JsonIgnoreProperties("teams")
+	@JsonIgnoreProperties(value = {"teams", "workItems"}, allowGetters=false, allowSetters=false)
 	private Set<User> users;
 
 	protected Team() {}
@@ -36,16 +37,17 @@ public class Team extends AbstractEntity {
 	public String getTeamName() {
 		return teamName;
 	}
+	
 	public Team setTeamName(String teamName) {
 		this.teamName = teamName;
 		return this;
 	}
-
+	
 	public Set<User> getUsers() {
 		return users;
 	}
 	
-	public void setUsers(Set<User> users) {
+	private void setUsers(Set<User> users) {
 		this.users = users;
 	}
 
@@ -75,6 +77,5 @@ public class Team extends AbstractEntity {
 	public String toString() {
 		return String.format("Team: %s, %s, active:%s", getId(), teamName, activeTeam);
 	}
-
 
 }

@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 
 @Entity
 @Table(name = "workitems")
+@JsonIgnoreProperties(value = {"users", "issues"}, allowGetters=true, allowSetters=false)
 public class WorkItem extends AbstractEntity {
 
 	@Column(nullable = false)
@@ -29,11 +30,11 @@ public class WorkItem extends AbstractEntity {
 	private Status status;
 	
 	@ManyToMany(mappedBy = "workItems", fetch=FetchType.EAGER)
-	@JsonIgnoreProperties({"workItems",  "teams"})
+	@JsonIgnoreProperties(value = {"workItems",  "teams"}, allowGetters=false, allowSetters=false)
 	private Set<User> users;
 
 	@OneToMany(mappedBy = "workItem", fetch=FetchType.EAGER)
-	@JsonIgnoreProperties("workitem")
+	@JsonIgnoreProperties(value = {"workItems"}, allowGetters=false, allowSetters=false)
 	private Set<Issue> issues;
 
 	protected WorkItem() {}

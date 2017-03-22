@@ -3,8 +3,6 @@ package se.kawi.taskmanager.service;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -32,34 +30,27 @@ public class TeamService extends BaseService<Team, TeamRepository> {
 	}
 	
 	public Team addTeamMember(User userInput, Team team) throws ServiceException {
+		if (team.getUsers().size() >= TEAM_MAX_SIZE) {
+			throw new ServiceException("Team is full");
+		}
+		
 		User user = userService.getById(userInput.getId());
+		if (user.getTeams().size() >= USER_MAX_TEAMS) {
+			throw new ServiceException("User has to many teams: ");
+		}
+		
 		team.addUser(user);
-		return save(team);
+		return super.save(team);
 	}
 
 	public Team removeTeamMember(User userInput, Team team) throws ServiceException {
 		User user = userService.getById(userInput.getId());
 		team.removeUser(user);
-		return save(team);
+		return super.save(team);
 	}
 	
 	public List<WorkItem> getTeamWorkItems(Specification<WorkItem> spec, Pageable pageable) throws ServiceException {
 		return workItemService.query(spec, pageable);
-	}
-
-	@Override
-	public Team save(Team team) throws ServiceException {
-		if  (team.getId() != null) {			
-			Set<User> teamUsers = team.getUsers();
-			if (teamUsers.size() >= TEAM_MAX_SIZE) {
-				throw new ServiceException("Team is full");
-			}		
-			Set<User> usersWithToManyTeams = teamUsers.stream().filter(u -> u.getTeams().size() > USER_MAX_TEAMS).collect(Collectors.toSet());
-			if (usersWithToManyTeams.size() > 0){
-				throw new ServiceException("User has to many teams: " + usersWithToManyTeams.toString());
-			}
-		}
-		return super.save(team);
 	}
 
 }

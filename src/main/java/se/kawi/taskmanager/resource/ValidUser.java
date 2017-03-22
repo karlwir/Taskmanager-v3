@@ -8,6 +8,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
+
 import se.kawi.taskmanager.model.User;
 
 @Retention(RetentionPolicy.RUNTIME)
@@ -28,12 +29,12 @@ public @interface ValidUser {
 
 		@Override
 		public boolean isValid(User user, ConstraintValidatorContext context) {
-			System.out.println("############################### VALIDATE");
 			return user != null &&
 				   user.getId() != null && 
 				   user.getFirstname() != null && 
 				   user.getLastname() != null && 
 				   user.getUsername() != null;
 		}
+		
     }
 }
