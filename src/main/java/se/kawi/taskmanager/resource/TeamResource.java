@@ -14,8 +14,6 @@ import javax.ws.rs.core.Response;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.stereotype.Component;
 
 import se.kawi.taskmanager.model.Team;
@@ -34,7 +32,7 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 	}
 
 	@POST
-	public Response createTeam(@Valid Team entity) {
+	public Response createTeam(@ValidTeamNew Team entity) {
 		return super.create(entity);
 	}
 
@@ -56,12 +54,12 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 	}
 
 	@PUT
-	public Response updateTeam(@Valid Team entity) {
+	public Response updateTeam(@ValidTeam Team entity) {
 		return super.update(entity);
 	}
 
 	@DELETE
-	public Response deleteTeam(@Valid Team entity) {
+	public Response deleteTeam(@ValidTeam Team entity) {
 		return super.delete(entity);
 	}
 
@@ -82,7 +80,7 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 
 	@PUT
 	@Path("/{id}/users")
-	public Response addTeamMember(@Valid User user, @PathParam("id") Long id) {
+	public Response addTeamMember(@ValidUser User user, @PathParam("id") Long id) {
 		return serviceRequest(() -> {
 			Team team = service.getById(id);
 			if (team != null) {
@@ -96,7 +94,7 @@ public class TeamResource extends BaseResource<Team, TeamService> {
 
 	@DELETE
 	@Path("/{id}/users")
-	public Response removeTeamMember(@Valid User user, @PathParam("id") Long id) {
+	public Response removeTeamMember(@ValidUser User user, @PathParam("id") Long id) {
 		return serviceRequest(() -> {
 			Team team = service.getById(id);
 			if (team != null) {

@@ -14,8 +14,6 @@ import javax.ws.rs.core.Response;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.stereotype.Component;
 
 import se.kawi.taskmanager.model.User;
@@ -33,7 +31,7 @@ public class UserResource extends BaseResource<User, UserService> {
 	}
 
 	@POST
-	public Response createUser(@Valid User entity) {
+	public Response createUser(@ValidUserNew User entity) {
 		return super.create(entity);
 	}
 
@@ -55,12 +53,12 @@ public class UserResource extends BaseResource<User, UserService> {
 	}
 
 	@PUT
-	public Response updateUser(@Valid User entity) {
+	public Response updateUser(@ValidUser User entity) {
 		return super.update(entity);
 	}
 
 	@DELETE
-	public Response deleteUser(@Valid User entity) {
+	public Response deleteUser(@ValidUser User entity) {
 		return super.delete(entity);
 	}
 	
@@ -76,13 +74,12 @@ public class UserResource extends BaseResource<User, UserService> {
 			} else {
 				return Response.status(404).build();
 			}
-			
 		});	
 	}
 	
 	@PUT
 	@Path("/{id}/workitems")
-	public Response assignWorkItem(@Valid WorkItem workItem, @PathParam("id") Long id) {
+	public Response assignWorkItem(@ValidWorkItem WorkItem workItem, @PathParam("id") Long id) {
 		return serviceRequest(() -> {
 			User user = service.getById(id);
 			if (user != null) {
@@ -96,7 +93,7 @@ public class UserResource extends BaseResource<User, UserService> {
 	
 	@DELETE
 	@Path("/{id}/workitems")
-	public Response withdrawWorkItem(@Valid WorkItem workItem, @PathParam("id") Long id) {
+	public Response withdrawWorkItem(@ValidWorkItem WorkItem workItem, @PathParam("id") Long id) {
 		return serviceRequest(() -> {
 			User user = service.getById(id);
 			if (user != null) {

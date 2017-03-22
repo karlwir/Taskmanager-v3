@@ -14,8 +14,6 @@ import javax.ws.rs.core.Response;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.stereotype.Component;
 
 import se.kawi.taskmanager.model.Issue;
@@ -33,7 +31,7 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	}
 
 	@POST
-	public Response createWorkItem(@Valid WorkItem entity) {
+	public Response createWorkItem(@ValidWorkItemNew WorkItem entity) {
 		return super.create(entity);
 	}
 
@@ -55,12 +53,12 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	}
 
 	@PUT
-	public Response updateWorkItem(@Valid WorkItem entity) {
+	public Response updateWorkItem(@ValidWorkItem WorkItem entity) {
 		return super.update(entity);
 	}
 
 	@DELETE
-	public Response deleteWorkItem(@Valid WorkItem entity) {
+	public Response deleteWorkItem(@ValidWorkItem WorkItem entity) {
 		return super.delete(entity);
 	}
 	
@@ -80,7 +78,7 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	
 	@PUT
 	@Path("/{id}/issues")
-	public Response addIssueToWorkItem(@Valid Issue issue, @PathParam("id") Long id) {
+	public Response addIssueToWorkItem(@ValidIssue Issue issue, @PathParam("id") Long id) {
 		return serviceRequest(() -> {
 			WorkItem workItem = service.getById(id);
 			if (workItem != null) {
@@ -94,7 +92,7 @@ public class WorkItemResource extends BaseResource<WorkItem, WorkItemService> {
 	
 	@DELETE
 	@Path("/{id}/issues")
-	public Response removeIssueFromWorkItem(@Valid Issue issue, @PathParam("id") Long id) {
+	public Response removeIssueFromWorkItem(@ValidIssue Issue issue, @PathParam("id") Long id) {
 		return serviceRequest(() -> {
 			WorkItem workItem = service.getById(id);
 			if (workItem != null) {

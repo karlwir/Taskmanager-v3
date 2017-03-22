@@ -31,17 +31,21 @@ public class WorkItemService extends BaseService<WorkItem, WorkItemRepository> {
 			throw new ServiceException("Work item needs to be done", new WebApplicationException("Work item needs to be done", 400));
 		}
 		else {
-			Issue issue = issueService.getById(issueInput.getId());
-			workItem.addIssue(issue);
-			workItem.setStatus(Status.UNSTARTED);
-			return save(workItem);
-		}
-		
+			return transaction(() -> {
+				Issue issue = issueService.getById(issueInput.getId());
+				issue.setWorkItem(workItem);
+				workItem.setStatus(Status.UNSTARTED);
+				issueService.save(issue);
+				save(workItem);
+				return workItem;
+			});
+		}		
 	}
 	
 	public WorkItem removeIssueFromWorkItem(Issue issueInput, WorkItem workItem) throws ServiceException {
 		Issue issue = issueService.getById(issueInput.getId());
-		workItem.removeIssue(issue);
-		return save(workItem);
+		issue.setWorkItem(null);
+		issueService.save(issue);
+		return workItem;
 	}
 }

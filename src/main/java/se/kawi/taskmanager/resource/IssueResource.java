@@ -12,8 +12,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import javax.validation.Valid;
-
 import org.springframework.stereotype.Component;
 
 import se.kawi.taskmanager.model.Issue;
@@ -30,7 +28,7 @@ public class IssueResource extends BaseResource<Issue, IssueService> {
 	}
 
 	@POST
-	public Response createIssue(@Valid Issue entity) {
+	public Response createIssue(@ValidIssueNew Issue entity) {
 		return super.create(entity);
 	}
 
@@ -52,12 +50,12 @@ public class IssueResource extends BaseResource<Issue, IssueService> {
 	}
 
 	@PUT
-	public Response updateIssue(@Valid Issue entity) {
+	public Response updateIssue(@ValidIssue Issue entity) {
 		return super.update(entity);
 	}
 
 	@DELETE
-	public Response deleteIssue(@Valid Issue entity) {
+	public Response deleteIssue(@ValidIssue Issue entity) {
 		return super.delete(entity);
 	}
 

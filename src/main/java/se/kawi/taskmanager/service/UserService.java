@@ -55,7 +55,7 @@ public class UserService extends BaseService<User, UserRepository> {
 			if (user.getUsername().length() < USERNAME_MIN_LENGTH) {
 				throw new ServiceException("Invalid username", new WebApplicationException("Invalid username", 400));
 			}
-			if (!user.isActiveUser()) {
+			if (!user.isActiveUser() && user.getId() != null) {
 				// Handle users work items before making user inactive 
 				Set<WorkItem> workItems = getById(user.getId()).getWorkItems();
 				workItems.stream()

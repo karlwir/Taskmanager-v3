@@ -46,7 +46,7 @@ public class Issue extends AbstractEntity {
 		return openIssue;
 	}
 
-	public WorkItem getWorkitem() {
+	public WorkItem getWorkItem() {
 		return workItem;
 	}
 	
